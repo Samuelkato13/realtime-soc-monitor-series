@@ -1,9 +1,11 @@
 import csv
 import random
 import time
+import os
 from datetime import datetime
 
-LOG_FILE = "security_logs.csv"
+BASE_DIR = os.path.dirname(__file__)
+LOG_FILE = os.path.join(BASE_DIR, "security_logs.csv")
 
 users = ["admin","john","lucy","samuel"]
 events = ["login_success","login_failed","file_access"]
