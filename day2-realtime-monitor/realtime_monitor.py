@@ -1,24 +1,39 @@
 import csv
+import random
 import time
+import os
+from datetime import datetime
 
-LOG_FILE="../day1-log-generator/security_logs.csv"
+BASE_DIR = os.path.dirname(__file__)
+LOG_FILE = os.path.join(BASE_DIR, "security_logs.csv")
 
-print("Real-time log monitoring started...\n")
+users = ["admin","john","lucy","samuel"]
+events = ["login_success","login_failed","file_access"]
+ips = [
+"192.168.1.10",
+"192.168.1.15",
+"10.0.0.5",
+"172.16.0.3",
+"45.77.23.12"
+]
 
-with open(LOG_FILE,"r") as file:
-    reader=csv.reader(file)
-    next(reader)
-    pointer=sum(1 for row in reader)
+with open(LOG_FILE,"w",newline="") as file:
+    writer = csv.writer(file)
+    writer.writerow(["timestamp","event","user","ip"])
+
+print("Starting log generation...\n")
 
 while True:
 
-    with open(LOG_FILE,"r") as file:
-        reader=list(csv.reader(file))
+    timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    event=random.choice(events)
+    user=random.choice(users)
+    ip=random.choice(ips)
 
-    new_logs=reader[pointer:]
-    pointer=len(reader)
+    with open(LOG_FILE,"a",newline="") as file:
+        writer=csv.writer(file)
+        writer.writerow([timestamp,event,user,ip])
 
-    for log in new_logs:
-        print("New Log:",log)
+    print(timestamp,event,user,ip)
 
-    time.sleep(1)
+    time.sleep(random.randint(1,3))
